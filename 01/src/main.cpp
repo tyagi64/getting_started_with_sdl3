@@ -46,6 +46,7 @@ class GDM {
         SDL_Event event;
         bool running = true;
         Circle testCirc = Circle(40,Point(500,40));
+        Circle backupCirc = testCirc;
         GDM(SDL_Window* win, SDL_Renderer* ren) : window(win), renderer(ren) {}
     public:
         
@@ -90,30 +91,59 @@ class GDM {
         }
         void drawCircle(Circle c){
             float lx= c.radius * std::sin(0),ly = c.radius * std::cos(0);
-            for(float i = 0 ;i <= 360;i+=45){
+            for(float i = 0 ;i <= 360;i+=0.01f){
                 float angle = i * (M_PI/180.0f);
                 float x = c.radius * std::sin(angle);
                 float y = c.radius * std::cos(angle);
                 createLine(lx+c.center.x,ly+c.center.y,x + c.center.x, y + c.center.y);
-                createLine(c.center.x,c.center.y,x+c.center.x,y + c.center.y);
+                // createLine(c.center.x,c.center.y,x+c.center.x,y + c.center.y);
                 lx = x;
                 ly = y;
             }
             
         }
         void render(){
-            SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
+            SDL_SetRenderDrawColor(renderer, 16, 24, 39, 255);
             SDL_RenderClear(renderer);
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_SetRenderDrawColor(renderer, 56, 189, 248, 255);
             drawCircle(testCirc);
             SDL_RenderPresent(renderer);
             testCirc.fall();
+        }
+        void handleKeyPress(SDL_Scancode keyCode,SDL_Keymod mod){
+            if(mod & SDL_KMOD_SHIFT){
+                std::cout<<"SHIFT ACTIVE!! \n";
+                std::cout<< "KEY Pressed "<<SDL_GetScancodeName(keyCode)<<std::endl;
+                switch (keyCode) {
+                case SDL_SCANCODE_Q:
+                    cancel();
+                    break;
+                case SDL_SCANCODE_C:
+                    testCirc = backupCirc;
+                    SDL_SetRenderDrawColor(renderer, 16, 24, 39, 255);
+                    SDL_RenderClear(renderer);
+                    SDL_RenderPresent(renderer);
+                    break;
+                default:
+                    break;
+                }
+            }
+        
+            if(mod & SDL_KMOD_CTRL){
+                std::cout<<"CTRL ACTIVE!! \n";
+            }
+        
+            if(mod & SDL_KMOD_ALT){
+                std::cout<<"ALT ACTIVE!! \n";
+            }
         }
         void handleEvents(){
             while(running && SDL_PollEvent(&event)){
                 switch (event.type) {
                     case SDL_EVENT_QUIT: 
                             cancel();
+                    case SDL_EVENT_KEY_DOWN:
+                            handleKeyPress(event.key.scancode,event.key.mod);
                             break;
                 } 
             }
