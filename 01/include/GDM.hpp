@@ -4,6 +4,8 @@
 #include<iostream>
 #include <utility>
 #include <vector>
+#include <memory>
+#include <cmath>
 
 class GDM {
     private:
@@ -78,7 +80,8 @@ class GDM {
             SDL_RenderPresent(renderer);
         }
         void pushCircle(Circle && c){
-            circles.push_back({c,c});
+            Circle backup = c;
+            circles.emplace_back(std::move(c), backup);
         }
         void handleKeyPress(SDL_Scancode keyCode,SDL_Keymod mod){
             if(mod & SDL_KMOD_SHIFT){
