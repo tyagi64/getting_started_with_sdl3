@@ -12,7 +12,7 @@ class Point{
         float Distance(Point b){
             float dx = b.x-x;
             float dy = b.y-y;
-            float dist = sqrt((dx*dx)+(dy*dy));
+            float dist = std::sqrt((dx*dx)+(dy*dy));
             return dist;
         }
 };

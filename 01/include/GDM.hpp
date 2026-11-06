@@ -1,4 +1,5 @@
 #pragma  once
+#include "Point.hpp"
 #include<SDL3/SDL.h>
 #include<Circle.hpp>
 #include<iostream>
@@ -78,6 +79,9 @@ class GDM {
                 drawCircle(c.first);
                 c.first.fall();
             }
+            if(dragging){
+                createLine(p1.x, p1.y, p2.x, p2.y);
+            }
             SDL_RenderPresent(renderer);
         }
         void pushCircle(Circle && c){
@@ -95,6 +99,11 @@ class GDM {
                 case SDL_SCANCODE_C:
                     for(auto &c : circles){
                         c.first = c.second;
+                    }
+                    break;
+                case SDL_SCANCODE_D:
+                    if(!circles.empty()){
+                        circles.pop_back();
                     }
                     break;
                 default:
@@ -120,19 +129,25 @@ class GDM {
                             handleKeyPress(event.key.scancode,event.key.mod);
                             break;
                     case SDL_EVENT_MOUSE_BUTTON_DOWN:
-                         p1 = Point(event.motion.x,event.motion.y);
-                         dragging = true;
-                         break;
+                            p1 = Point(event.button.x, event.button.y);
+                            p2 = p1;
+                            dragging = true;
+                            break;
                     case SDL_EVENT_MOUSE_BUTTON_UP:
-                        dragging = false;
-                        p2 = Point(event.motion.x,event.motion.y);
-                        pushCircle(Circle(p1.Distance(p2),std::move(p1)));
-                        break;
+                        if (dragging) {
+                                p2 = Point(event.button.x, event.button.y);
+                        
+                                float radius = p1.Distance(p2);
+                                if (radius > 2.0f) {
+                                    pushCircle(Circle(radius, p1));
+                                }
+                                
+                                dragging = false;
+                            }
+                            break;
                     case SDL_EVENT_MOUSE_MOTION:
                         if(dragging){
-                            std::cout<<"DRAG:\n";
-                            createLine(p1.x, p1.y, event.motion.x, event.motion.y);
-                            SDL_RenderPresent(renderer);
+                              p2 = Point(event.motion.x, event.motion.y);
                         }
                         break;
                 } 
