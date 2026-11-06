@@ -90,7 +90,7 @@ class GDM {
         }
         void drawCircle(Circle c){
             float lx= c.radius * std::sin(0),ly = c.radius * std::cos(0);
-            for(float i = 0 ;i <= 360;i+=10){
+            for(float i = 0 ;i <= 360;i+=0.1f){
                 float angle = i * (M_PI/180.0f);
                 float x = c.radius * std::sin(angle);
                 float y = c.radius * std::cos(angle);
