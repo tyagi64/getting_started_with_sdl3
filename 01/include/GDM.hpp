@@ -1,6 +1,9 @@
+#pragma  once
 #include<SDL3/SDL.h>
 #include<Circle.hpp>
 #include<iostream>
+#include <utility>
+#include <vector>
 
 class GDM {
     private:
@@ -8,8 +11,7 @@ class GDM {
         SDL_Renderer* renderer;
         SDL_Event event;
         bool running = true;
-        Circle testCirc = Circle(40,Point(500,40));
-        Circle backupCirc = testCirc;
+        std::vector<std::pair<Circle, Circle>> circles;
         GDM(SDL_Window* win, SDL_Renderer* ren) : window(win), renderer(ren) {}
     public:
         
@@ -69,9 +71,14 @@ class GDM {
             SDL_SetRenderDrawColor(renderer, 16, 24, 39, 255);
             SDL_RenderClear(renderer);
             SDL_SetRenderDrawColor(renderer, 56, 189, 248, 255);
-            drawCircle(testCirc);
+            for(auto &c : circles){
+                drawCircle(c.first);
+                c.first.fall();
+            }
             SDL_RenderPresent(renderer);
-            testCirc.fall();
+        }
+        void pushCircle(Circle && c){
+            circles.push_back({c,c});
         }
         void handleKeyPress(SDL_Scancode keyCode,SDL_Keymod mod){
             if(mod & SDL_KMOD_SHIFT){
@@ -82,7 +89,9 @@ class GDM {
                     cancel();
                     break;
                 case SDL_SCANCODE_C:
-                    testCirc = backupCirc;
+                    for(auto &c : circles){
+                        c.first = c.second;
+                    }
                     break;
                 default:
                     break;

@@ -15,6 +15,9 @@ int main(){
     }
   
     std::cout << "Game started successfully!\n";
+    for(float l = 10;l<400;l+=40){
+        app->pushCircle(Circle(10,Point(l,10)));
+    }
     app->run();
     return 0;
 }

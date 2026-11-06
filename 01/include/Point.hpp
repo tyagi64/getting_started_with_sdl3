@@ -7,8 +7,4 @@ class Point{
             x = x_in;
             y = y_in;
         }
-        void scale(Point s){
-            x += s.x;
-            y += s.y;
-        }
 };
