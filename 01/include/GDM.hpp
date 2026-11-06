@@ -2,10 +2,7 @@
 #include<SDL3/SDL.h>
 #include<Circle.hpp>
 #include<iostream>
-#include <utility>
 #include <vector>
-#include <memory>
-#include <cmath>
 
 class GDM {
     private:
@@ -14,6 +11,9 @@ class GDM {
         SDL_Event event;
         bool running = true;
         std::vector<std::pair<Circle, Circle>> circles;
+        Point p1 = Point(0,0);
+        Point p2 = Point(0,0);
+        bool dragging = false;
         GDM(SDL_Window* win, SDL_Renderer* ren) : window(win), renderer(ren) {}
     public:
         
@@ -54,6 +54,7 @@ class GDM {
             running = false;
         }
         void createLine(float x1,float y1,float x2,float y2){
+                SDL_SetRenderDrawColor(renderer, 56, 189, 248, 255);
                 SDL_RenderLine(renderer, x1,y1,x2,y2);
         }
         void drawCircle(Circle c){
@@ -118,6 +119,22 @@ class GDM {
                     case SDL_EVENT_KEY_DOWN:
                             handleKeyPress(event.key.scancode,event.key.mod);
                             break;
+                    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+                         p1 = Point(event.motion.x,event.motion.y);
+                         dragging = true;
+                         break;
+                    case SDL_EVENT_MOUSE_BUTTON_UP:
+                        dragging = false;
+                        p2 = Point(event.motion.x,event.motion.y);
+                        pushCircle(Circle(p1.Distance(p2),std::move(p1)));
+                        break;
+                    case SDL_EVENT_MOUSE_MOTION:
+                        if(dragging){
+                            std::cout<<"DRAG:\n";
+                            createLine(p1.x, p1.y, event.motion.x, event.motion.y);
+                            SDL_RenderPresent(renderer);
+                        }
+                        break;
                 } 
             }
         }

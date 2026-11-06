@@ -15,11 +15,11 @@ int main(){
     }
   
     std::cout << "Game started successfully!\n";
-    int idx = 1;
-    for(float l = 20;l<720;l+=100){
-        app->pushCircle(Circle(10,Point(l,10+idx)));
-        idx += 20;
-    }
+    // int idx = 1;
+    // for(float l = 20;l<720;l+=100){
+    //     app->pushCircle(Circle(10,Point(l,10+idx)));
+    //     idx += 20;
+    // }
     app->run();
     return 0;
 }
