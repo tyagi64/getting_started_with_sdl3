@@ -23,7 +23,7 @@ class Circle{
         float radius;
         float velocityY = 0.0f;
         float gravity = 0.15f;
-        float restitution = 0.50f;
+        float restitution = 0.60f;
         Circle(float r,Point p): center(p),radius(r){}
         void fall(){
             velocityY +=  gravity;
@@ -90,11 +90,12 @@ class GDM {
         }
         void drawCircle(Circle c){
             float lx= c.radius * std::sin(0),ly = c.radius * std::cos(0);
-            for(float i = 1 ;i <= 360;i+=1){
+            for(float i = 0 ;i <= 360;i+=10){
                 float angle = i * (M_PI/180.0f);
                 float x = c.radius * std::sin(angle);
                 float y = c.radius * std::cos(angle);
                 createLine(lx+c.center.x,ly+c.center.y,x + c.center.x, y + c.center.y);
+                createLine(c.center.x,c.center.y,x+c.center.x,y + c.center.y);
                 lx = x;
                 ly = y;
             }
