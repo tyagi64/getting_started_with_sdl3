@@ -1,8 +1,6 @@
 #include <cmath>
-#include <cstdlib>
 #include<iostream>
 #include<SDL3/SDL.h>
-#include <memory>
 
 class Point{
     public:
