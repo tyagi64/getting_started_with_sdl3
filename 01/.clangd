@@ -1,0 +1,6 @@
+CompileFlags:
+  CompilationDatabase: .roger/build/macos-debug
+
+Diagnostics:
+  UnusedIncludes: Strict
+  MissingIncludes: None
