@@ -167,5 +167,5 @@ int main(){
   
     std::cout << "Game started successfully!\n";
     app->run();
-    return 0; // 'game' goes
+    return 0;
 }
