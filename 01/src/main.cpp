@@ -91,7 +91,7 @@ class GDM {
         }
         void drawCircle(Circle c){
             float lx= c.radius * std::sin(0),ly = c.radius * std::cos(0);
-            for(float i = 0 ;i <= 360;i+=0.01f){
+            for(float i = 0 ;i <= 360;i+=0.5f){
                 float angle = i * (M_PI/180.0f);
                 float x = c.radius * std::sin(angle);
                 float y = c.radius * std::cos(angle);
@@ -120,9 +120,6 @@ class GDM {
                     break;
                 case SDL_SCANCODE_C:
                     testCirc = backupCirc;
-                    SDL_SetRenderDrawColor(renderer, 16, 24, 39, 255);
-                    SDL_RenderClear(renderer);
-                    SDL_RenderPresent(renderer);
                     break;
                 default:
                     break;
@@ -142,6 +139,7 @@ class GDM {
                 switch (event.type) {
                     case SDL_EVENT_QUIT: 
                             cancel();
+                            break;
                     case SDL_EVENT_KEY_DOWN:
                             handleKeyPress(event.key.scancode,event.key.mod);
                             break;
