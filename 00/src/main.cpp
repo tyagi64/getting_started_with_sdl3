@@ -15,6 +15,24 @@ class Object{
     public:
         std::vector<Point> obj;
 };
+void putPoints(SDL_Renderer* renderer,std::vector<Object>& objs){
+    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    
+    for(Object obj : objs){
+        std::vector<Point> ps = obj.obj;
+        for (size_t i = 1; i < ps.size(); i++) {
+                SDL_RenderLine(
+                    renderer,
+                    ps[i - 1].x,
+                    ps[i - 1].y,
+                    ps[i].x,
+                    ps[i].y
+                );
+            }
+    }
+}
 bool handleKeyPress(SDL_Renderer* renderer,std::vector<Object>& objs,SDL_Scancode keyCode,SDL_Keymod mod){
     bool output = true;
     if(mod & SDL_KMOD_SHIFT){
@@ -31,6 +49,18 @@ bool handleKeyPress(SDL_Renderer* renderer,std::vector<Object>& objs,SDL_Scancod
             SDL_RenderClear(renderer);
             SDL_RenderPresent(renderer);
             break;
+        case SDL_SCANCODE_Z:
+            if(!objs.empty()){
+                objs.pop_back();
+                if (objs.empty()) {
+                    objs.push_back(Object());
+                }
+                SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
+                SDL_RenderClear(renderer);
+                putPoints(renderer, objs);
+                SDL_RenderPresent(renderer);
+            }
+            break;
         default:
             break;
         }
@@ -44,26 +74,6 @@ bool handleKeyPress(SDL_Renderer* renderer,std::vector<Object>& objs,SDL_Scancod
         std::cout<<"ALT ACTIVE!! \n";
     }
     return  output;
-}
-void putPoints(SDL_Renderer* renderer,std::vector<Object>& objs){
-    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    // for(Point p:ps){
-    //     SDL_RenderPoint(renderer, p.x,p.y);
-    // }
-    for(Object obj : objs){
-        std::vector<Point> ps = obj.obj;
-        for (size_t i = 1; i < ps.size(); i++) {
-                SDL_RenderLine(
-                    renderer,
-                    ps[i - 1].x,
-                    ps[i - 1].y,
-                    ps[i].x,
-                    ps[i].y
-                );
-            }
-    }
 }
 
 int main(){
